@@ -37,6 +37,8 @@
         "html": false
       }
     ],
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "react/display-name": 0,
+    "react/jsx-boolean-value": 0
   }
 }
