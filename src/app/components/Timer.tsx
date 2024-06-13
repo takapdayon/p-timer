@@ -45,10 +45,11 @@ export const Timer = ({ expiryTimestamp, onExpire, getRestartTime, countState }:
   return (
     <div className="w-fill flex h-full grow flex-col gap-8">
       <div className="flex grow items-center justify-center">
-        <div className="h-full text-center text-4xl font-bold tracking-widest">
-          <h5>{formattedTime}</h5>
-          <br />
-          <span>{countState}</span>
+        <div className="flex size-64 items-center justify-center rounded-full shadow-np-fly">
+          <div className="mt-6 text-center text-4xl font-bold tracking-widest">
+            <h3>{formattedTime}</h3>
+            <span className="text-base">set: {countState}</span>
+          </div>
         </div>
       </div>
       <div className="flex justify-between">

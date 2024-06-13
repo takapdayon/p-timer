@@ -17,6 +17,7 @@ const config: Config = {
         background: 'rgb(var(--background))',
       },
       boxShadow: {
+        'np-fly': `6px 6px 9px rgb(var(--np-shadow)), -6px -6px 9px rgb(var(--np-bright))`,
         'np-flat': `3px 3px 5px rgb(var(--np-shadow)), -3px -3px 5px rgb(var(--np-bright))`,
         'np-pressed': 'inset 3px 3px 5px rgb(var(--np-shadow)), inset -3px -3px 5px rgb(var(--np-bright))',
 
