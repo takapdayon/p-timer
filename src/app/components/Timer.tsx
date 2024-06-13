@@ -6,11 +6,11 @@ import { useTimer } from 'react-timer-hook';
 type TimerProps = {
   expiryTimestamp: Date;
   onExpire: () => Date;
-  getRestartTime: () => Date;
+  onClickRestart: () => Date;
   countState: number;
 };
 
-export const Timer = ({ expiryTimestamp, onExpire, getRestartTime, countState }: TimerProps) => {
+export const Timer = ({ expiryTimestamp, onExpire, onClickRestart, countState }: TimerProps) => {
   const [expired, setExpired] = useState(false);
   const [flipState, setFlipState] = useState<boolean>();
 
@@ -40,7 +40,7 @@ export const Timer = ({ expiryTimestamp, onExpire, getRestartTime, countState }:
     setExpired(false);
   }, [flipState]); // ごめんよ...exhaustive-depsりんたー
 
-  const onClickRestart = useCallback(() => restart(getRestartTime(), false), [getRestartTime, restart]);
+  const handleOnClick = useCallback(() => restart(onClickRestart(), false), [onClickRestart, restart]);
 
   return (
     <div className="w-fill flex h-full grow flex-col gap-8">
@@ -48,7 +48,7 @@ export const Timer = ({ expiryTimestamp, onExpire, getRestartTime, countState }:
         <div className="flex size-64 items-center justify-center rounded-full shadow-np-fly">
           <div className="mt-6 text-center text-4xl font-bold tracking-widest">
             <h3>{formattedTime}</h3>
-            <span className="text-base">set: {countState}</span>
+            <span className="text-base">set: {countState - 1}</span>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@ export const Timer = ({ expiryTimestamp, onExpire, getRestartTime, countState }:
             </div>
           </FlatNPButton>
         )}
-        <FlatNPButton className="w-32 px-6 py-2 font-bold text-sky-600" onClick={onClickRestart}>
+        <FlatNPButton className="w-32 px-6 py-2 font-bold text-sky-600" onClick={handleOnClick}>
           <div className="flex items-center justify-center gap-1">
             <span className="i-material-symbols-replay-circle-filled-outline-rounded size-5"></span>
             Restart

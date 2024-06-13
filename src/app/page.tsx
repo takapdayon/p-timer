@@ -53,7 +53,10 @@ const Home = () => {
       return getTime(getValues('longBreakTime'));
     }
     return getTime(getValues('breakTime'));
-  }, [countState, onBreakTime, getTime, getValues]);
+  const onClickRestart = useCallback(() => {
+    setCountState(1);
+    return getTime(getValues('time'));
+  }, [getTime, getValues]);
 
   return (
     <main className="flex flex-col items-center justify-between p-24">
@@ -76,7 +79,7 @@ const Home = () => {
           <Timer
             expiryTimestamp={getTime(getValues('time'))}
             onExpire={onExpire}
-            getRestartTime={() => getTime(getValues('time'))}
+            onClickRestart={onClickRestart}
             countState={countState}
           />
         )}
