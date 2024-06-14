@@ -60,29 +60,34 @@ const Home = () => {
 
   return (
     <main className="flex flex-col items-center justify-between p-24">
-      <div className="flex min-h-[40rem] w-96 flex-col gap-8 rounded-[24px] bg-background px-6 py-12 shadow-np-flat">
-        <div className="flex w-full justify-between">
-          <h2 className="text-3xl font-bold">Timer</h2>
+      <div className="flex w-96 flex-col rounded-[24px] bg-background shadow-np-flat">
+        <div className="flex min-h-[40rem] flex-col gap-8 px-6 py-12">
+          <div className="flex w-full justify-between">
+            <h2 className="text-3xl font-bold">Timer</h2>
+            {configOpen ? (
+              <PressedNPButton className="size-8" onClick={() => setConfigOpen(false)}>
+                <span className="i-material-symbols-settings-outline-rounded size-6"></span>
+              </PressedNPButton>
+            ) : (
+              <FlatNPButton className="size-8" onClick={() => setConfigOpen(true)}>
+                <span className="i-material-symbols-settings-outline-rounded size-6"></span>
+              </FlatNPButton>
+            )}
+          </div>
           {configOpen ? (
-            <PressedNPButton className="size-8" onClick={() => setConfigOpen(false)}>
-              <span className="i-material-symbols-settings-outline-rounded size-6"></span>
-            </PressedNPButton>
+            <TimerForm register={register} watch={watch} errors={errors} />
           ) : (
-            <FlatNPButton className="size-8" onClick={() => setConfigOpen(true)}>
-              <span className="i-material-symbols-settings-outline-rounded size-6"></span>
-            </FlatNPButton>
+            <Timer
+              expiryTimestamp={getTime(getValues('time'))}
+              onExpire={onExpire}
+              onClickRestart={onClickRestart}
+              countState={countState}
+            />
           )}
         </div>
-        {configOpen ? (
-          <TimerForm register={register} watch={watch} errors={errors} />
-        ) : (
-          <Timer
-            expiryTimestamp={getTime(getValues('time'))}
-            onExpire={onExpire}
-            onClickRestart={onClickRestart}
-            countState={countState}
-          />
-        )}
+        <footer className="mb-4 w-full text-center text-xs text-gray-400">
+          © 2024 taka p*2. All rights reserved.
+        </footer>
       </div>
     </main>
   );
