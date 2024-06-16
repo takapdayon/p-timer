@@ -1,48 +1,35 @@
 'use client';
 
-import { useState, type ComponentProps, type ReactNode } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { type ComponentProps, type ReactNode } from 'react';
+import { tv } from 'tailwind-variants';
 
-type BaseNPButtonProps = { children: ReactNode } & ComponentProps<'button'>;
+const npButton = tv({
+  base: 'flex items-center justify-center rounded-lg bg-background',
+  variants: {
+    npType: {
+      press: 'shadow-np-shallow-pressed',
+      normal: 'active:shadow-np-deep-pressed',
+      flat: 'shadow-np-shallow-flat active:shadow-np-shallow-pressed',
+      fly: 'bg-red-500',
+    },
+    npColor: {
+      green: 'text-green-600',
+      red: 'text-red-600',
+      blue: 'text-sky-600',
+    },
+  },
+});
 
-const BaseNPButton = ({ children, className, ...props }: BaseNPButtonProps) => {
-  const mergedClass = twMerge('flex items-center justify-center rounded-lg bg-background', className);
+type NPButtonProps = {
+  children: ReactNode;
+  npType?: 'press' | 'flat' | 'fly' | 'normal';
+  npColor?: 'green' | 'red' | 'blue';
+} & ComponentProps<'button'>;
+
+export const NPButton = ({ children, className, type = 'button', npType, npColor, ...props }: NPButtonProps) => {
   return (
-    <button type="button" className={mergedClass} {...props}>
+    <button type={type} className={npButton({ npType, npColor, className })} {...props}>
       {children}
     </button>
-  );
-};
-
-type FlatNPButtonProps = BaseNPButtonProps;
-export const FlatNPButton = ({ children, className, ...props }: FlatNPButtonProps) => {
-  const mergedClass = twMerge('shadow-np-shallow-flat active:shadow-np-shallow-pressed', className);
-  return (
-    <BaseNPButton className={mergedClass} {...props}>
-      {children}
-    </BaseNPButton>
-  );
-};
-
-type PressedNPButtonProps = BaseNPButtonProps;
-export const PressedNPButton = ({ children, className, ...props }: PressedNPButtonProps) => {
-  const mergedClass = twMerge('text-sky-500 shadow-np-shallow-pressed', className);
-  return (
-    <BaseNPButton className={mergedClass} {...props}>
-      {children}
-    </BaseNPButton>
-  );
-};
-
-export const NPButton = ({ initial, children }: { initial: boolean; children: ReactNode }) => {
-  const [state, setState] = useState(initial);
-  return (
-    <>
-      {state ? (
-        <FlatNPButton onClick={() => setState(false)}>{children}</FlatNPButton>
-      ) : (
-        <PressedNPButton onClick={() => setState(true)}>{children}</PressedNPButton>
-      )}
-    </>
   );
 };

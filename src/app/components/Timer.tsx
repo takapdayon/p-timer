@@ -1,5 +1,5 @@
 'use client';
-import { FlatNPButton } from '@/app/components/buttons';
+import { NPButton } from '@/app/components/buttons';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 
@@ -54,26 +54,26 @@ export const Timer = ({ expiryTimestamp, onExpire, onClickRestart, countState }:
       </div>
       <div className="flex justify-between">
         {(expired ? !isRunning : isRunning) ? (
-          <FlatNPButton className="w-32 px-6 py-2 font-bold text-red-600" onClick={pause}>
+          <NPButton npColor="red" npType="flat" className="w-32 px-6 py-2 font-bold" onClick={pause}>
             <div className="flex items-center justify-center gap-1">
               <span className="i-material-symbols-pause-circle-outline-rounded size-5"></span>
               Stop
             </div>
-          </FlatNPButton>
+          </NPButton>
         ) : (
-          <FlatNPButton className="w-32 px-6 py-2 font-bold text-green-600" onClick={resume}>
+          <NPButton npColor="green" npType="flat" className="w-32 px-6 py-2 font-bold" onClick={resume}>
             <div className="flex items-center justify-center gap-1">
               <span className="i-material-symbols-play-circle-outline-rounded size-5"></span>
               Start
             </div>
-          </FlatNPButton>
+          </NPButton>
         )}
-        <FlatNPButton className="w-32 px-6 py-2 font-bold text-sky-600" onClick={handleOnClick}>
+        <NPButton npColor="blue" npType="flat" className="w-32 px-6 py-2 font-bold" onClick={handleOnClick}>
           <div className="flex items-center justify-center gap-1">
             <span className="i-material-symbols-replay-circle-filled-outline-rounded size-5"></span>
             Restart
           </div>
-        </FlatNPButton>
+        </NPButton>
       </div>
     </div>
   );

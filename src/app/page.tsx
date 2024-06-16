@@ -2,7 +2,7 @@
 
 import { TimerForm } from '@/app/components/Form';
 import { Timer } from '@/app/components/Timer';
-import { FlatNPButton, PressedNPButton } from '@/app/components/buttons';
+import { NPButton } from '@/app/components/buttons';
 import { TimeFormSchema } from '@/app/type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
@@ -64,15 +64,14 @@ const Home = () => {
         <div className="flex min-h-[40rem] flex-col gap-8 px-6 py-12">
           <div className="flex w-full justify-between">
             <h2 className="text-3xl font-bold">Timer</h2>
-            {configOpen ? (
-              <PressedNPButton className="size-8" onClick={() => setConfigOpen(false)}>
-                <span className="i-material-symbols-settings-outline-rounded size-6"></span>
-              </PressedNPButton>
-            ) : (
-              <FlatNPButton className="size-8" onClick={() => setConfigOpen(true)}>
-                <span className="i-material-symbols-settings-outline-rounded size-6"></span>
-              </FlatNPButton>
-            )}
+            <NPButton
+              npType={configOpen ? 'press' : 'flat'}
+              npColor={configOpen ? 'blue' : undefined}
+              className="size-8"
+              onClick={() => setConfigOpen(prev => !prev)}
+            >
+              <span className="i-material-symbols-settings-outline-rounded size-6"></span>
+            </NPButton>
           </div>
           {configOpen ? (
             <TimerForm register={register} watch={watch} errors={errors} />
