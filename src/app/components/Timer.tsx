@@ -1,5 +1,5 @@
 'use client';
-import { NPButton } from '@/app/components/buttons';
+import { NPButton } from '@/app/components/Elements/Button';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 

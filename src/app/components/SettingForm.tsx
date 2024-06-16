@@ -1,34 +1,8 @@
-import { NPButton } from '@/app/components/buttons';
+import { NPButton } from '@/app/components/Elements/Button';
+import { NPCheckboxForm, NPFileForm, NPNumberInputForm } from '@/app/components/Elements/Form';
 import type { TimeFormSchema } from '@/app/type';
-import { forwardRef, useState, type ComponentProps } from 'react';
+import { useState } from 'react';
 import type { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
-import { twMerge } from 'tailwind-merge';
-
-type NPNumberInputFormProps = ComponentProps<'input'>;
-
-const NPNumberInputForm = forwardRef<HTMLInputElement, NPNumberInputFormProps>(({ className, ...props }, ref) => {
-  const mergedClass = twMerge(
-    'h-10 w-full rounded-lg bg-background p-2 shadow-np-shallow-pressed outline-none',
-    className,
-  );
-  return <input ref={ref} className={mergedClass} type="number" {...props} />;
-});
-
-type NPCheckboxFormProps = ComponentProps<'input'>;
-const NPCheckboxForm = forwardRef<HTMLInputElement, NPCheckboxFormProps>(({ checked, className, ...props }, ref) => {
-  const mergedClass = twMerge(
-    'block size-4 appearance-none rounded-sm bg-background shadow-np-shallow-flat outline-none checked:shadow-np-shallow-pressed',
-    className,
-  );
-  return (
-    <div className="relative">
-      <input ref={ref} type="checkbox" className={mergedClass} checked={checked} {...props} />
-      <span
-        className={`i-material-symbols-fitbit-check-small-rounded pointer-events-none absolute left-[-4px] top-[-4px] size-6 ${checked ? 'text-sky-500' : 'text-neutral-500'} `}
-      />
-    </div>
-  );
-});
 
 export const TimerForm = ({
   register,
@@ -94,8 +68,14 @@ export const TimerForm = ({
       {configTab === 2 && (
         <>
           <div className="my-6">
-            <label className="text-sm text-gray-500">作業時間(分)</label>
-            <NPNumberInputForm {...register('time', { valueAsNumber: true })} min={1} max={59} />
+            <label className="text-sm text-gray-500">開始SE</label>
+            <NPFileForm {...register('time')} />
+            <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
+            <></>
+          </div>
+          <div className="my-6">
+            <label className="text-sm text-gray-500">終了SE</label>
+            <NPFileForm {...register('time')} />
             <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
             <></>
           </div>
