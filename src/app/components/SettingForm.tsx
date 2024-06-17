@@ -1,18 +1,18 @@
 import { NPButton } from '@/app/components/Elements/Button';
 import { NPCheckboxForm, NPFileForm, NPNumberInputForm } from '@/app/components/Elements/Form';
 import type { TimeFormSchema } from '@/app/type';
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import type { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
-export const TimerForm = ({
-  register,
-  watch,
-  errors,
-}: {
+type TimerFormProps = {
   register: UseFormRegister<TimeFormSchema>;
   watch: UseFormWatch<TimeFormSchema>;
   errors: FieldErrors<TimeFormSchema>;
-}) => {
+  setStartSE: (key: number, file: File) => void;
+  setEndSE: (key: number, file: File) => void;
+};
+
+export const TimerForm = ({ register, watch, errors, setStartSE, setEndSE }: TimerFormProps) => {
   const [configTab, setConfigTab] = useState(1);
   const checked = watch('needLongBreak');
   return (
@@ -65,22 +65,34 @@ export const TimerForm = ({
           </div>
         </>
       )}
-      {configTab === 2 && (
-        <>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">開始SE</label>
-            <NPFileForm {...register('time')} />
-            <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
-            <></>
-          </div>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">終了SE</label>
-            <NPFileForm {...register('time')} />
-            <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
-            <></>
-          </div>
-        </>
-      )}
+      {configTab === 2 && <SoundEffectForm setStartSE={setStartSE} setEndSE={setEndSE} />}
     </div>
+  );
+};
+
+const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<TimerFormProps, 'setStartSE' | 'setEndSE'>) => {
+  const onChangeStartSE = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files?.length === 0 || files === null) return;
+    setStartSE(1, files[0]);
+  };
+
+  const onChangeEndSE = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files?.length === 0 || files === null) return;
+    setEndSE(2, files[0]);
+  };
+
+  return (
+    <>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">開始SE</label>
+        <NPFileForm accept="audio/*" onChange={onChangeStartSE} />
+      </div>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">終了SE</label>
+        <NPFileForm accept="audio/*" onChange={onChangeEndSE} />
+      </div>
+    </>
   );
 };

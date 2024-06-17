@@ -1,16 +1,19 @@
 'use client';
 
-import { TimerForm } from '@/app/components/Form';
+import { NPButton } from '@/app/components/Elements/Button';
+import { TimerForm } from '@/app/components/SettingForm';
 import { Timer } from '@/app/components/Timer';
-import { NPButton } from '@/app/components/buttons';
 import { TimeFormSchema } from '@/app/type';
+import { useSoundEffects } from '@/app/useHook';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const Home = () => {
   const [configOpen, setConfigOpen] = useState(false);
+  const [onBreakTime, setOnBreakTime] = useState(false);
   const [countState, setCountState] = useState(1);
+  const { playStartSE, playEndSE, setStartSE, setEndSE } = useSoundEffects();
 
   const {
     register,
@@ -35,14 +38,14 @@ const Home = () => {
     return time;
   }, []);
 
-  const [onBreakTime, setOnBreakTime] = useState(false);
-
   const onExpire = useCallback(() => {
     if (onBreakTime) {
       setOnBreakTime(false);
+      playStartSE();
       return getTime(getValues('time'));
     }
 
+    playEndSE();
     setOnBreakTime(true);
     setCountState(prev => prev + 1);
 
@@ -53,15 +56,18 @@ const Home = () => {
       return getTime(getValues('longBreakTime'));
     }
     return getTime(getValues('breakTime'));
+  }, [countState, onBreakTime, getTime, getValues, playStartSE, playEndSE]);
+
   const onClickRestart = useCallback(() => {
     setCountState(1);
+    setOnBreakTime(false);
     return getTime(getValues('time'));
   }, [getTime, getValues]);
 
   return (
     <main className="flex flex-col items-center justify-between p-24">
       <div className="flex w-96 flex-col rounded-[24px] bg-background shadow-np-flat">
-        <div className="flex min-h-[40rem] flex-col gap-8 px-6 py-12">
+        <div className="flex min-h-[41rem] flex-col gap-8 px-6 py-12">
           <div className="flex w-full justify-between">
             <h2 className="text-3xl font-bold">Timer</h2>
             <NPButton
@@ -74,7 +80,7 @@ const Home = () => {
             </NPButton>
           </div>
           {configOpen ? (
-            <TimerForm register={register} watch={watch} errors={errors} />
+            <TimerForm register={register} watch={watch} errors={errors} setStartSE={setStartSE} setEndSE={setEndSE} />
           ) : (
             <Timer
               expiryTimestamp={getTime(getValues('time'))}
