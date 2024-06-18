@@ -13,4 +13,12 @@ export const TimeFormSchema = z.object({
   setCount: z.number(),
 });
 
+export const TimeFormDefaultValues = {
+  time: 25,
+  breakTime: 5,
+  longBreakTime: 30,
+  needLongBreak: true,
+  setCount: 4,
+};
+
 export type TimeFormSchema = z.infer<typeof TimeFormSchema>;

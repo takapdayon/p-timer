@@ -1,36 +1,18 @@
 'use client';
 
 import { NPButton } from '@/app/components/Elements/Button';
-import { TimerForm } from '@/app/components/SettingForm';
+import { SettingForm } from '@/app/components/SettingForm';
 import { Timer } from '@/app/components/Timer';
-import { TimeFormSchema } from '@/app/type';
+import { TimeFormDefaultValues } from '@/app/type';
 import { useSoundEffects } from '@/app/useHook';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 const Home = () => {
   const [configOpen, setConfigOpen] = useState(false);
   const [onBreakTime, setOnBreakTime] = useState(false);
   const [countState, setCountState] = useState(1);
   const { playStartSE, playEndSE, setStartSE, setEndSE } = useSoundEffects();
-
-  const {
-    register,
-    getValues,
-    watch,
-    formState: { errors },
-  } = useForm<TimeFormSchema>({
-    resolver: zodResolver(TimeFormSchema),
-    defaultValues: {
-      time: 25,
-      breakTime: 5,
-      longBreakTime: 30,
-      needLongBreak: true,
-      setCount: 4,
-    },
-    mode: 'onBlur',
-  });
+  const [settingTime, setSettingTime] = useState(TimeFormDefaultValues);
 
   const getTime = useCallback((minutes: number) => {
     const time = new Date();
@@ -42,27 +24,38 @@ const Home = () => {
     if (onBreakTime) {
       setOnBreakTime(false);
       playStartSE();
-      return getTime(getValues('time'));
+      return getTime(settingTime.time);
     }
 
     playEndSE();
     setOnBreakTime(true);
     setCountState(prev => prev + 1);
 
-    if (!getValues('needLongBreak')) {
-      return getTime(getValues('breakTime'));
+    if (!settingTime.needLongBreak) {
+      return getTime(settingTime.breakTime);
     }
-    if (countState !== 0 && countState % getValues('setCount') === 0) {
-      return getTime(getValues('longBreakTime'));
+    if (countState !== 0 && countState % settingTime.setCount === 0) {
+      return getTime(settingTime.longBreakTime);
     }
-    return getTime(getValues('breakTime'));
-  }, [countState, onBreakTime, getTime, getValues, playStartSE, playEndSE]);
+    return getTime(settingTime.breakTime);
+  }, [
+    countState,
+    getTime,
+    onBreakTime,
+    playEndSE,
+    playStartSE,
+    settingTime.breakTime,
+    settingTime.longBreakTime,
+    settingTime.needLongBreak,
+    settingTime.setCount,
+    settingTime.time,
+  ]);
 
   const onClickRestart = useCallback(() => {
     setCountState(1);
     setOnBreakTime(false);
-    return getTime(getValues('time'));
-  }, [getTime, getValues]);
+    return getTime(settingTime.time);
+  }, [getTime, settingTime.time]);
 
   return (
     <main className="flex flex-col items-center justify-between p-24">
@@ -80,10 +73,15 @@ const Home = () => {
             </NPButton>
           </div>
           {configOpen ? (
-            <TimerForm register={register} watch={watch} errors={errors} setStartSE={setStartSE} setEndSE={setEndSE} />
+            <SettingForm
+              setStartSE={setStartSE}
+              setEndSE={setEndSE}
+              settingTime={settingTime}
+              setSettingTime={setSettingTime}
+            />
           ) : (
             <Timer
-              expiryTimestamp={getTime(getValues('time'))}
+              expiryTimestamp={getTime(settingTime.time)}
               onExpire={onExpire}
               onClickRestart={onClickRestart}
               countState={countState}

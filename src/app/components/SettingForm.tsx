@@ -1,21 +1,21 @@
 import { NPButton } from '@/app/components/Elements/Button';
 import { NPCheckboxForm, NPFileForm, NPNumberInputForm } from '@/app/components/Elements/Form';
-import type { TimeFormSchema } from '@/app/type';
+import { TimeFormSchema } from '@/app/type';
 import { useSoundEffects } from '@/app/useHook';
-import { useState, type ChangeEvent } from 'react';
-import type { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCallback, useState, type ChangeEvent, type Dispatch, type SetStateAction } from 'react';
+import { useForm } from 'react-hook-form';
 
-type TimerFormProps = {
-  register: UseFormRegister<TimeFormSchema>;
-  watch: UseFormWatch<TimeFormSchema>;
-  errors: FieldErrors<TimeFormSchema>;
+type SettingFormProps = {
   setStartSE: (key: number, file: File) => void;
   setEndSE: (key: number, file: File) => void;
+  settingTime: TimeFormSchema;
+  setSettingTime: Dispatch<SetStateAction<TimeFormSchema>>;
 };
 
-export const TimerForm = ({ register, watch, errors, setStartSE, setEndSE }: TimerFormProps) => {
+export const SettingForm = ({ setStartSE, setEndSE, settingTime, setSettingTime }: SettingFormProps) => {
   const [configTab, setConfigTab] = useState(1);
-  const checked = watch('needLongBreak');
+
   return (
     <div>
       <div className="flex">
@@ -36,42 +36,72 @@ export const TimerForm = ({ register, watch, errors, setStartSE, setEndSE }: Tim
           <div className="flex items-center justify-center gap-1">sound</div>
         </NPButton>
       </div>
-      {configTab === 1 && (
-        <>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">作業時間(分)</label>
-            <NPNumberInputForm {...register('time', { valueAsNumber: true })} min={1} max={59} />
-            <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
-            <></>
-          </div>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">休憩時間(分)</label>
-            <NPNumberInputForm {...register('breakTime', { valueAsNumber: true })} min={1} max={59} />
-            <span className="text-sm text-red-500">{errors.breakTime && errors.breakTime.message}</span>
-          </div>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">ロング休憩時間(分)</label>
-            <NPNumberInputForm {...register('longBreakTime', { valueAsNumber: true })} min={1} max={59} />
-            <span className="text-sm text-red-500">{errors.longBreakTime && errors.longBreakTime.message}</span>
-          </div>
-          <div className="my-6">
-            <label className="text-sm text-gray-500 ">ロング休憩の有無</label>
-            <NPCheckboxForm {...register('needLongBreak')} checked={checked} />
-            <span className="text-sm text-red-500">{errors.needLongBreak && errors.needLongBreak.message}</span>
-          </div>
-          <div className="my-6">
-            <label className="text-sm text-gray-500">セット数</label>
-            <NPNumberInputForm {...register('setCount', { valueAsNumber: true })} min={1} max={59} />
-            <span className="text-sm text-red-500">{errors.setCount && errors.setCount.message}</span>
-          </div>
-        </>
-      )}
+      {configTab === 1 && <TimeForm settingTime={settingTime} setSettingTime={setSettingTime} />}
       {configTab === 2 && <SoundEffectForm setStartSE={setStartSE} setEndSE={setEndSE} />}
     </div>
   );
 };
 
-const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<TimerFormProps, 'setStartSE' | 'setEndSE'>) => {
+const TimeForm = ({ settingTime, setSettingTime }: Pick<SettingFormProps, 'settingTime' | 'setSettingTime'>) => {
+  const {
+    trigger,
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<TimeFormSchema>({
+    resolver: zodResolver(TimeFormSchema),
+    values: settingTime,
+    mode: 'onBlur',
+  });
+
+  const checked = watch('needLongBreak');
+
+  const onSubmit = useCallback((values: TimeFormSchema) => setSettingTime(values), [setSettingTime]);
+
+  const onHandleBlur = useCallback(async () => {
+    if (await trigger()) {
+      handleSubmit(onSubmit)();
+    }
+  }, [handleSubmit, onSubmit, trigger]);
+
+  return (
+    <>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">作業時間(分)</label>
+        <NPNumberInputForm {...register('time', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
+        <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
+        <></>
+      </div>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">休憩時間(分)</label>
+        <NPNumberInputForm {...register('breakTime', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
+        <span className="text-sm text-red-500">{errors.breakTime && errors.breakTime.message}</span>
+      </div>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">ロング休憩時間(分)</label>
+        <NPNumberInputForm
+          {...register('longBreakTime', { valueAsNumber: true, onBlur: onHandleBlur })}
+          min={1}
+          max={59}
+        />
+        <span className="text-sm text-red-500">{errors.longBreakTime && errors.longBreakTime.message}</span>
+      </div>
+      <div className="my-6">
+        <label className="text-sm text-gray-500 ">ロング休憩の有無</label>
+        <NPCheckboxForm {...register('needLongBreak', { onBlur: onHandleBlur })} checked={checked} />
+        <span className="text-sm text-red-500">{errors.needLongBreak && errors.needLongBreak.message}</span>
+      </div>
+      <div className="my-6">
+        <label className="text-sm text-gray-500">セット数</label>
+        <NPNumberInputForm {...register('setCount', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
+        <span className="text-sm text-red-500">{errors.setCount && errors.setCount.message}</span>
+      </div>
+    </>
+  );
+};
+
+const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setStartSE' | 'setEndSE'>) => {
   const { startSE, endSE } = useSoundEffects();
 
   const onChangeStartSE = (e: ChangeEvent<HTMLInputElement>) => {
