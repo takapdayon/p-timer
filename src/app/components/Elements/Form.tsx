@@ -31,15 +31,24 @@ export const NPCheckboxForm = forwardRef<HTMLInputElement, NPCheckboxFormProps>(
   },
 );
 
-type NPFileFormProps = ComponentProps<'input'>;
-export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(({ className, ...props }, ref) => {
+type NPFileFormProps = {
+  fileName: string;
+} & ComponentProps<'input'>;
+
+export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(({ fileName, className, ...props }, ref) => {
   const mergedClass = twMerge(
-    'cursor-pointer file:cursor-pointer block w-full rounded-md shadow-np-shallow-flat text-sm text-slate-500 file:mr-2 file:py-2 file:px-4 file:border-0 file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100',
+    'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100',
     className,
   );
   return (
-    <div className="relative">
-      <input ref={ref} type="file" className={mergedClass} {...props} />
+    <div className="flex">
+      <input ref={ref} type="file" id="file" className="hidden" {...props} />
+      <label htmlFor="file" className={mergedClass}>
+        選択
+      </label>
+      <div className="flex w-full items-center rounded-r-md text-sm text-slate-500 shadow-np-shallow-pressed">
+        <span className="ml-2">{fileName}</span>
+      </div>
     </div>
   );
 });

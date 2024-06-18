@@ -1,6 +1,7 @@
 import { NPButton } from '@/app/components/Elements/Button';
 import { NPCheckboxForm, NPFileForm, NPNumberInputForm } from '@/app/components/Elements/Form';
 import type { TimeFormSchema } from '@/app/type';
+import { useSoundEffects } from '@/app/useHook';
 import { useState, type ChangeEvent } from 'react';
 import type { FieldErrors, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
@@ -71,6 +72,8 @@ export const TimerForm = ({ register, watch, errors, setStartSE, setEndSE }: Tim
 };
 
 const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<TimerFormProps, 'setStartSE' | 'setEndSE'>) => {
+  const { startSE, endSE } = useSoundEffects();
+
   const onChangeStartSE = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length === 0 || files === null) return;
@@ -86,12 +89,20 @@ const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<TimerFormProps, 'setStar
   return (
     <>
       <div className="my-6">
-        <label className="text-sm text-gray-500">開始SE</label>
-        <NPFileForm accept="audio/*" onChange={onChangeStartSE} />
+        <div className="text-sm text-gray-500">開始SE</div>
+        <NPFileForm
+          accept="audio/*"
+          onChange={onChangeStartSE}
+          fileName={startSE?.file instanceof File ? startSE.file.name : startSE?.file ?? ''}
+        />
       </div>
       <div className="my-6">
-        <label className="text-sm text-gray-500">終了SE</label>
-        <NPFileForm accept="audio/*" onChange={onChangeEndSE} />
+        <div className="text-sm text-gray-500">終了SE</div>
+        <NPFileForm
+          accept="audio/*"
+          onChange={onChangeEndSE}
+          fileName={endSE?.file instanceof File ? endSE.file.name : endSE?.file ?? ''}
+        />
       </div>
     </>
   );
