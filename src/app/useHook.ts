@@ -16,8 +16,8 @@ export const useAudio = (object: string | File | undefined) => {
     audio.current?.play();
   }, [audio]);
 
-  const onChangeAudio = useCallback((object: File) => {
-    const url = URL.createObjectURL(object);
+  const onChangeAudio = useCallback((object: string | File) => {
+    const url = object instanceof File ? URL.createObjectURL(object) : object;
     audio.current = new Audio(url);
   }, []);
 
@@ -34,12 +34,12 @@ export const useSoundEffects = () => {
   const { playAudio: playStartSE, onChangeAudio: onChangeStartAudio } = useAudio(startSE?.file);
   const { playAudio: playEndSE, onChangeAudio: onChangeEndAudio } = useAudio(endSE?.file);
 
-  const setStartSE = (key: number, file: File) => {
-    db.soundEffects.update(key, { file });
+  const setStartSE = (file: string | File) => {
+    db.soundEffects.update(1, { file });
     onChangeStartAudio(file);
   };
-  const setEndSE = (key: number, file: File) => {
-    db.soundEffects.update(key, { file });
+  const setEndSE = (file: string | File) => {
+    db.soundEffects.update(2, { file });
     onChangeEndAudio(file);
   };
 

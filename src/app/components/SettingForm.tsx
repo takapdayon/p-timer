@@ -7,8 +7,8 @@ import { useCallback, useState, type ChangeEvent, type Dispatch, type SetStateAc
 import { useForm } from 'react-hook-form';
 
 type SettingFormProps = {
-  setStartSE: (key: number, file: File) => void;
-  setEndSE: (key: number, file: File) => void;
+  setStartSE: (file: string | File) => void;
+  setEndSE: (file: string | File) => void;
   settingTime: TimeFormSchema;
   setSettingTime: Dispatch<SetStateAction<TimeFormSchema>>;
 };
@@ -107,13 +107,13 @@ const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setSt
   const onChangeStartSE = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length === 0 || files === null) return;
-    setStartSE(1, files[0]);
+    setStartSE(files[0]);
   };
 
   const onChangeEndSE = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files?.length === 0 || files === null) return;
-    setEndSE(2, files[0]);
+    setEndSE(files[0]);
   };
 
   return (
@@ -124,6 +124,8 @@ const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setSt
           accept="audio/*"
           onChange={onChangeStartSE}
           fileName={startSE?.file instanceof File ? startSE.file.name : startSE?.file ?? ''}
+          showClose={typeof startSE?.file !== 'string'}
+          onClickClose={() => setStartSE('default.mp3')}
         />
       </div>
       <div className="my-6">
@@ -132,6 +134,8 @@ const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setSt
           accept="audio/*"
           onChange={onChangeEndSE}
           fileName={endSE?.file instanceof File ? endSE.file.name : endSE?.file ?? ''}
+          showClose={typeof endSE?.file !== 'string'}
+          onClickClose={() => setEndSE('default.mp3')}
         />
       </div>
     </>

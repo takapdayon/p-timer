@@ -33,22 +33,42 @@ export const NPCheckboxForm = forwardRef<HTMLInputElement, NPCheckboxFormProps>(
 
 type NPFileFormProps = {
   fileName: string;
+  showClose?: boolean;
+  onClickClose?: ComponentProps<'span'>['onClick'];
 } & ComponentProps<'input'>;
 
-export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(({ fileName, className, ...props }, ref) => {
-  const mergedClass = twMerge(
-    'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100',
-    className,
-  );
-  return (
-    <div className="flex">
-      <input ref={ref} type="file" id="file" className="hidden" {...props} />
-      <label htmlFor="file" className={mergedClass}>
-        選択
-      </label>
-      <div className="flex w-full items-center rounded-r-md text-sm text-slate-500 shadow-np-shallow-pressed">
-        <span className="ml-2">{fileName}</span>
+export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
+  ({ fileName, className, showClose = false, onClickClose, ...props }, ref) => {
+    const mergedClass = twMerge(
+      'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100',
+      className,
+    );
+
+    return (
+      <div className="flex">
+        <input
+          ref={ref}
+          type="file"
+          id="file"
+          className="hidden"
+          onClick={e => {
+            (e.target as HTMLInputElement).value = '';
+          }}
+          {...props}
+        />
+        <label htmlFor="file" className={mergedClass}>
+          選択
+        </label>
+        <div className="flex w-full items-center justify-between rounded-r-md text-sm text-slate-500 shadow-np-shallow-pressed">
+          <span className="ml-2 max-w-56 truncate">{fileName}</span>
+          {showClose && (
+            <span
+              onClick={onClickClose}
+              className="i-material-symbols-close-rounded mr-2 cursor-pointer text-red-500"
+            ></span>
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
