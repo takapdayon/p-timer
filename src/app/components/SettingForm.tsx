@@ -7,14 +7,17 @@ import { useCallback, useState, type ChangeEvent, type Dispatch, type SetStateAc
 import { useForm } from 'react-hook-form';
 
 type SettingFormProps = {
+  openConfig: boolean;
   setStartSE: (file: string | File) => void;
   setEndSE: (file: string | File) => void;
   settingTime: TimeFormSchema;
   setSettingTime: Dispatch<SetStateAction<TimeFormSchema>>;
 };
 
-export const SettingForm = ({ setStartSE, setEndSE, settingTime, setSettingTime }: SettingFormProps) => {
+export const SettingForm = ({ openConfig, setStartSE, setEndSE, settingTime, setSettingTime }: SettingFormProps) => {
   const [configTab, setConfigTab] = useState(1);
+
+  if (!openConfig) return null;
 
   return (
     <div>

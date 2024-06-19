@@ -8,7 +8,7 @@ import { useSoundEffects } from '@/app/useHook';
 import { useCallback, useState } from 'react';
 
 const Home = () => {
-  const [configOpen, setConfigOpen] = useState(false);
+  const [openConfig, setOpenConfig] = useState(false);
   const [onBreakTime, setOnBreakTime] = useState(false);
   const [countState, setCountState] = useState(1);
   const { playStartSE, playEndSE, setStartSE, setEndSE } = useSoundEffects();
@@ -64,29 +64,28 @@ const Home = () => {
           <div className="flex w-full justify-between">
             <h2 className="text-3xl font-bold">Timer</h2>
             <NPButton
-              npType={configOpen ? 'press' : 'flat'}
-              npColor={configOpen ? 'blue' : undefined}
+              npType={openConfig ? 'press' : 'flat'}
+              npColor={openConfig ? 'blue' : undefined}
               className="size-8"
-              onClick={() => setConfigOpen(prev => !prev)}
+              onClick={() => setOpenConfig(prev => !prev)}
             >
               <span className="i-material-symbols-settings-outline-rounded size-6"></span>
             </NPButton>
           </div>
-          {configOpen ? (
-            <SettingForm
-              setStartSE={setStartSE}
-              setEndSE={setEndSE}
-              settingTime={settingTime}
-              setSettingTime={setSettingTime}
-            />
-          ) : (
-            <Timer
-              expiryTimestamp={getTime(settingTime.time)}
-              onExpire={onExpire}
-              onClickRestart={onClickRestart}
-              countState={countState}
-            />
-          )}
+          <SettingForm
+            openConfig={openConfig}
+            setStartSE={setStartSE}
+            setEndSE={setEndSE}
+            settingTime={settingTime}
+            setSettingTime={setSettingTime}
+          />
+          <Timer
+            openConfig={openConfig}
+            expiryTimestamp={getTime(settingTime.time)}
+            onExpire={onExpire}
+            onClickRestart={onClickRestart}
+            countState={countState}
+          />
         </div>
         <footer className="mb-4 w-full text-center text-xs text-gray-400">
           © 2024 taka p*2. All rights reserved.

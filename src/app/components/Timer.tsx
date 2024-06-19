@@ -4,13 +4,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 
 type TimerProps = {
+  openConfig: boolean;
   expiryTimestamp: Date;
   onExpire: () => Date;
   onClickRestart: () => Date;
   countState: number;
 };
 
-export const Timer = ({ expiryTimestamp, onExpire, onClickRestart, countState }: TimerProps) => {
+export const Timer = ({ openConfig, expiryTimestamp, onExpire, onClickRestart, countState }: TimerProps) => {
   const [expired, setExpired] = useState(false);
   const [flipState, setFlipState] = useState<boolean>();
 
@@ -42,6 +43,7 @@ export const Timer = ({ expiryTimestamp, onExpire, onClickRestart, countState }:
 
   const handleOnClick = useCallback(() => restart(onClickRestart(), false), [onClickRestart, restart]);
 
+  if (openConfig) return null;
   return (
     <div className="w-fill flex h-full grow flex-col gap-8">
       <div className="flex grow items-center justify-center">
