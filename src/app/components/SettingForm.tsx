@@ -1,5 +1,5 @@
 import { NPButton } from '@/app/components/Elements/Button';
-import { NPCheckboxForm, NPFileForm, NPNumberInputForm } from '@/app/components/Elements/Form';
+import { NPCheckboxForm, NPFileForm, NPNumberInputForm, NPRangeSliderForm } from '@/app/components/Elements/Form';
 import { TimeFormSchema } from '@/app/type';
 import { useSoundEffects } from '@/app/useHook';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,9 +12,19 @@ type SettingFormProps = {
   setEndSE: (file: string | File) => void;
   settingTime: TimeFormSchema;
   setSettingTime: Dispatch<SetStateAction<TimeFormSchema>>;
+  volume: number;
+  setVolume: Dispatch<SetStateAction<number>>;
 };
 
-export const SettingForm = ({ openConfig, setStartSE, setEndSE, settingTime, setSettingTime }: SettingFormProps) => {
+export const SettingForm = ({
+  openConfig,
+  setStartSE,
+  setEndSE,
+  settingTime,
+  setSettingTime,
+  volume,
+  setVolume,
+}: SettingFormProps) => {
   const [configTab, setConfigTab] = useState(1);
 
   if (!openConfig) return null;
@@ -40,7 +50,9 @@ export const SettingForm = ({ openConfig, setStartSE, setEndSE, settingTime, set
         </NPButton>
       </div>
       {configTab === 1 && <TimeForm settingTime={settingTime} setSettingTime={setSettingTime} />}
-      {configTab === 2 && <SoundEffectForm setStartSE={setStartSE} setEndSE={setEndSE} />}
+      {configTab === 2 && (
+        <SoundEffectForm setStartSE={setStartSE} setEndSE={setEndSE} volume={volume} setVolume={setVolume} />
+      )}
     </div>
   );
 };
@@ -104,7 +116,12 @@ const TimeForm = ({ settingTime, setSettingTime }: Pick<SettingFormProps, 'setti
   );
 };
 
-const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setStartSE' | 'setEndSE'>) => {
+const SoundEffectForm = ({
+  setStartSE,
+  setEndSE,
+  volume,
+  setVolume,
+}: Pick<SettingFormProps, 'setStartSE' | 'setEndSE' | 'volume' | 'setVolume'>) => {
   const { startSE, endSE } = useSoundEffects();
 
   const onChangeStartSE = (e: ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +157,10 @@ const SoundEffectForm = ({ setStartSE, setEndSE }: Pick<SettingFormProps, 'setSt
           showClose={typeof endSE?.file !== 'string'}
           onClickClose={() => setEndSE('default.mp3')}
         />
+      </div>
+      <div className="my-6">
+        <div className="text-sm text-gray-500">ボリューム</div>
+        <NPRangeSliderForm max={1} step={0.01} value={volume} onChange={e => setVolume(parseFloat(e.target.value))} />
       </div>
     </>
   );

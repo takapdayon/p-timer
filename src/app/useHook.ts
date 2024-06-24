@@ -1,16 +1,9 @@
 import { db } from '@/app/db.';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-export const useAudio = (object: string | File | undefined) => {
+export const useAudio = (object: string | File | undefined, volume: number) => {
   const audio = useRef<HTMLAudioElement>();
-
-  useEffect(() => {
-    if (object) {
-      const url = object instanceof File ? URL.createObjectURL(object) : object;
-      audio.current = new Audio(url);
-    }
-  }, [object]);
 
   const playAudio = useCallback(() => {
     audio.current?.play();
@@ -21,6 +14,18 @@ export const useAudio = (object: string | File | undefined) => {
     audio.current = new Audio(url);
   }, []);
 
+  useEffect(() => {
+    if (object) {
+      const url = object instanceof File ? URL.createObjectURL(object) : object;
+      audio.current = new Audio(url);
+      audio.current.volume = volume;
+    }
+  }, [object, volume]);
+
+  useEffect(() => {
+    if (audio.current) audio.current.volume = volume;
+  }, [volume]);
+
   return {
     playAudio,
     onChangeAudio,
@@ -30,9 +35,10 @@ export const useAudio = (object: string | File | undefined) => {
 export const useSoundEffects = () => {
   const startSE = useLiveQuery(() => db.soundEffects.where('startOrEnd').equals('start').first(), []);
   const endSE = useLiveQuery(() => db.soundEffects.where('startOrEnd').equals('end').first(), []);
+  const [volume, setVolume] = useState(1);
 
-  const { playAudio: playStartSE, onChangeAudio: onChangeStartAudio } = useAudio(startSE?.file);
-  const { playAudio: playEndSE, onChangeAudio: onChangeEndAudio } = useAudio(endSE?.file);
+  const { playAudio: playStartSE, onChangeAudio: onChangeStartAudio } = useAudio(startSE?.file, volume);
+  const { playAudio: playEndSE, onChangeAudio: onChangeEndAudio } = useAudio(endSE?.file, volume);
 
   const setStartSE = (file: string | File) => {
     db.soundEffects.update(1, { file });
@@ -50,5 +56,7 @@ export const useSoundEffects = () => {
     playEndSE,
     setStartSE,
     setEndSE,
+    volume,
+    setVolume,
   };
 };

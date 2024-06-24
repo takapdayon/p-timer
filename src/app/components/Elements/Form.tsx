@@ -72,3 +72,31 @@ export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
     );
   },
 );
+
+type NPRangeSliderFormProps = ComponentProps<'input'>;
+
+export const NPRangeSliderForm = forwardRef<HTMLInputElement, NPRangeSliderFormProps>(
+  ({ className, ...props }, ref) => {
+    const mergedClass = twMerge(
+      `
+        h-2 w-full appearance-none rounded-full cursor-pointer shadow-np-shallow-pressed
+        [&::-webkit-slider-thumb]:size-4
+        [&::-webkit-slider-thumb]:appearance-none
+        [&::-webkit-slider-thumb]:rounded-full
+        [&::-webkit-slider-thumb]:border-none
+        [&::-webkit-slider-thumb]:bg-background
+        [&::-webkit-slider-thumb]:shadow-np-shallow-flat
+        active:[&::-webkit-slider-thumb]:scale-110
+      `,
+      className,
+    );
+
+    return (
+      <div className="mt-1 flex w-full items-center gap-2">
+        <span className="i-material-symbols-volume-off-rounded size-7 text-gray-500" />
+        <input ref={ref} type="range" className={mergedClass} {...props} />
+        <span className="i-material-symbols-volume-up-rounded size-7 text-gray-500" />
+      </div>
+    );
+  },
+);

@@ -11,7 +11,7 @@ const Home = () => {
   const [openConfig, setOpenConfig] = useState(false);
   const [onBreakTime, setOnBreakTime] = useState(false);
   const [countState, setCountState] = useState(1);
-  const { playStartSE, playEndSE, setStartSE, setEndSE } = useSoundEffects();
+  const { playStartSE, playEndSE, setStartSE, setEndSE, volume, setVolume } = useSoundEffects();
   const [settingTime, setSettingTime] = useState(TimeFormDefaultValues);
 
   const getTime = useCallback((minutes: number) => {
@@ -78,6 +78,8 @@ const Home = () => {
             setEndSE={setEndSE}
             settingTime={settingTime}
             setSettingTime={setSettingTime}
+            volume={volume}
+            setVolume={setVolume}
           />
           <Timer
             openConfig={openConfig}
