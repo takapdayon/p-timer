@@ -16,7 +16,7 @@ export const TimeFormSchema = z.object({
 export const TimeFormDefaultValues = {
   time: 25,
   breakTime: 5,
-  longBreakTime: 30,
+  longBreakTime: 15,
   needLongBreak: true,
   setCount: 4,
 };
