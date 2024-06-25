@@ -61,8 +61,16 @@ const Home = () => {
     <main className="flex flex-col items-center justify-between p-24">
       <div className="flex w-96 flex-col rounded-[24px] bg-background shadow-np-flat">
         <div className="flex min-h-[41rem] flex-col gap-8 px-6 py-12">
-          <div className="flex w-full justify-between">
-            <h2 className="text-3xl font-bold">Timer</h2>
+          <div className="flex w-full items-center justify-between">
+            <h2
+              className={`i-material-symbols-timer size-10 text-3xl font-bold text-red-500 ${
+                onBreakTime
+                  ? countState !== 0 && (countState - 1) % settingTime.setCount === 0
+                    ? 'text-blue-500'
+                    : 'text-green-500'
+                  : 'text-red-500'
+              }`}
+            />
             <NPButton
               npType={openConfig ? 'press' : 'flat'}
               npColor={openConfig ? 'blue' : undefined}
