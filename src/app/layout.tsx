@@ -15,7 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={noteSansJP.className}>{children}</body>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon.png"></link>
+        <meta name="theme-color" content="#F5F7FA" />
+      </head>
+      <body className={`${noteSansJP.className} h-screen`}>{children}</body>
     </html>
   );
 }

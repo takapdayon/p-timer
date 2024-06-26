@@ -58,9 +58,9 @@ const Home = () => {
   }, [getTime, settingTime.time]);
 
   return (
-    <main className="flex flex-col items-center justify-between p-24">
-      <div className="flex w-96 flex-col rounded-[24px] bg-background shadow-np-flat">
-        <div className="flex min-h-[41rem] flex-col gap-8 px-6 py-12">
+    <main className="flex h-full flex-col items-center justify-between">
+      <div className="xs:my-36 xs:w-96 xs:rounded-[24px] flex size-full flex-col bg-background shadow-np-flat ">
+        <div className="xs:min-h-[41rem] xs:py-12 flex h-full flex-col gap-8 p-6">
           <div className="flex w-full items-center justify-between">
             <h2
               className={`i-material-symbols-timer size-10 text-3xl font-bold text-red-500 ${
