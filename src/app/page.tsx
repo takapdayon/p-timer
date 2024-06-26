@@ -63,7 +63,7 @@ const Home = () => {
         <div className="xs:min-h-[41rem] xs:py-12 flex h-full flex-col gap-8 p-6">
           <div className="flex w-full items-center justify-between">
             <h2
-              className={`i-material-symbols-timer size-10 text-3xl font-bold text-red-500 ${
+              className={`i-material-symbols-timer size-10 text-3xl font-bold ${
                 onBreakTime
                   ? countState !== 0 && (countState - 1) % settingTime.setCount === 0
                     ? 'text-blue-500'
