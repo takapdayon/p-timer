@@ -141,6 +141,7 @@ const SoundEffectForm = ({
       <div className="my-6">
         <div className="text-sm text-gray-500">開始SE</div>
         <NPFileForm
+          id="start-file"
           accept="audio/*"
           onChange={onChangeStartSE}
           fileName={startSE?.file instanceof File ? startSE.file.name : startSE?.file ?? ''}
@@ -151,6 +152,7 @@ const SoundEffectForm = ({
       <div className="my-6">
         <div className="text-sm text-gray-500">終了SE</div>
         <NPFileForm
+          id="end-file"
           accept="audio/*"
           onChange={onChangeEndSE}
           fileName={endSE?.file instanceof File ? endSE.file.name : endSE?.file ?? ''}

@@ -38,7 +38,7 @@ type NPFileFormProps = {
 } & ComponentProps<'input'>;
 
 export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
-  ({ fileName, className, showClose = false, onClickClose, ...props }, ref) => {
+  ({ id, fileName, className, showClose = false, onClickClose, ...props }, ref) => {
     const mergedClass = twMerge(
       'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100',
       className,
@@ -49,14 +49,14 @@ export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
         <input
           ref={ref}
           type="file"
-          id="file"
+          id={id}
           className="hidden"
           onClick={e => {
             (e.target as HTMLInputElement).value = '';
           }}
           {...props}
         />
-        <label htmlFor="file" className={mergedClass}>
+        <label htmlFor={id} className={mergedClass}>
           選択
         </label>
         <div className="flex w-full items-center justify-between rounded-r-md text-sm text-slate-500 shadow-np-shallow-pressed">
