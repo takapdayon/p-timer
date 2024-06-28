@@ -60,7 +60,7 @@ const Home = () => {
   return (
     <main className="flex h-full flex-col items-center justify-between">
       <div className="xs:my-auto xs:w-96 xs:rounded-[24px] xs:h-[41rem] flex size-full flex-col bg-background shadow-np-flat">
-        <div className="xs:py-12 flex h-full flex-col gap-8 p-6">
+        <div className="xs:py-8 flex h-full flex-col gap-8 p-6">
           <div className="flex w-full items-center justify-between">
             <h2
               className={`i-material-symbols-timer size-10 text-3xl font-bold ${
