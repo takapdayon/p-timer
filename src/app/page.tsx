@@ -1,6 +1,6 @@
 'use client';
 
-import { NPButton } from '@/app/components/Elements/Button';
+import { HeaderButton } from '@/app/components/HeaderButton';
 import { SettingForm } from '@/app/components/SettingForm';
 import { Timer } from '@/app/components/Timer';
 import { TimeFormDefaultValues } from '@/app/type';
@@ -59,8 +59,8 @@ const Home = () => {
 
   return (
     <main className="flex h-full flex-col items-center justify-between">
-      <div className="xs:my-auto xs:w-96 xs:rounded-[24px] xs:h-[41rem] flex size-full flex-col bg-background shadow-np-flat">
-        <div className="xs:py-8 flex h-full flex-col gap-8 p-6">
+      <div className="flex size-full flex-col bg-background shadow-np-flat xs:my-auto xs:h-[41rem] xs:w-96 xs:rounded-[24px]">
+        <div className="flex h-full flex-col gap-8 p-6 xs:py-8">
           <div className="flex w-full items-center justify-between">
             <h2
               className={`i-material-symbols-timer size-10 text-3xl font-bold ${
@@ -71,14 +71,7 @@ const Home = () => {
                   : 'text-red-500'
               }`}
             />
-            <NPButton
-              npType={openConfig ? 'press' : 'flat'}
-              npColor={openConfig ? 'blue' : undefined}
-              className="size-8"
-              onClick={() => setOpenConfig(prev => !prev)}
-            >
-              <span className="i-material-symbols-settings-outline-rounded size-6"></span>
-            </NPButton>
+            <HeaderButton openConfig={openConfig} setOpenConfig={setOpenConfig} />
           </div>
           <SettingForm
             openConfig={openConfig}
@@ -97,9 +90,7 @@ const Home = () => {
             countState={countState}
           />
         </div>
-        <footer className="mb-4 w-full text-center text-xs text-gray-400">
-          © 2024 taka p*2. All rights reserved.
-        </footer>
+        <footer className="mb-4 w-full text-center text-xs text-subtext">© 2024 taka p*2. All rights reserved.</footer>
       </div>
     </main>
   );

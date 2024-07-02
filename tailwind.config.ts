@@ -18,6 +18,8 @@ const config: Config = {
       },
       colors: {
         background: 'rgb(var(--background))',
+        text: 'rgb(var(--text))',
+        subtext: 'rgb(var(--sub-text))',
       },
       boxShadow: {
         'np-fly': `6px 6px 9px rgb(var(--np-shadow)), -6px -6px 9px rgb(var(--np-bright))`,
@@ -37,5 +39,6 @@ const config: Config = {
       collections: getIconCollections(['material-symbols', 'simple-icons']),
     }),
   ],
+  darkMode: 'class',
 };
 export default config;

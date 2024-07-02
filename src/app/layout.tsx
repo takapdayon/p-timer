@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
 
@@ -14,13 +15,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#F5F7FA" />
       </head>
-      <body className={`${noteSansJP.className} h-screen`}>{children}</body>
+      <body className={`${noteSansJP.className} h-screen`}>
+        <ThemeProvider enableSystem={false} attribute="class">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

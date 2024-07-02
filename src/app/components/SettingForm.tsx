@@ -83,18 +83,18 @@ const TimeForm = ({ settingTime, setSettingTime }: Pick<SettingFormProps, 'setti
   return (
     <>
       <div className="my-6">
-        <label className="text-sm text-gray-500">作業時間(分)</label>
+        <label className="text-sm text-subtext">作業時間(分)</label>
         <NPNumberInputForm {...register('time', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
         <span className="text-sm text-red-500">{errors.time && errors.time.message}</span>
         <></>
       </div>
       <div className="my-6">
-        <label className="text-sm text-gray-500">休憩時間(分)</label>
+        <label className="text-sm text-subtext">休憩時間(分)</label>
         <NPNumberInputForm {...register('breakTime', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
         <span className="text-sm text-red-500">{errors.breakTime && errors.breakTime.message}</span>
       </div>
       <div className="my-6">
-        <label className="text-sm text-gray-500">ロング休憩時間(分)</label>
+        <label className="text-sm text-subtext">ロング休憩時間(分)</label>
         <NPNumberInputForm
           {...register('longBreakTime', { valueAsNumber: true, onBlur: onHandleBlur })}
           min={1}
@@ -103,12 +103,12 @@ const TimeForm = ({ settingTime, setSettingTime }: Pick<SettingFormProps, 'setti
         <span className="text-sm text-red-500">{errors.longBreakTime && errors.longBreakTime.message}</span>
       </div>
       <div className="my-6">
-        <label className="text-sm text-gray-500 ">ロング休憩の有無</label>
+        <label className="text-sm text-subtext ">ロング休憩の有無</label>
         <NPCheckboxForm {...register('needLongBreak', { onBlur: onHandleBlur })} checked={checked} />
         <span className="text-sm text-red-500">{errors.needLongBreak && errors.needLongBreak.message}</span>
       </div>
       <div className="my-6">
-        <label className="text-sm text-gray-500">セット数</label>
+        <label className="text-sm text-subtext">セット数</label>
         <NPNumberInputForm {...register('setCount', { valueAsNumber: true, onBlur: onHandleBlur })} min={1} max={59} />
         <span className="text-sm text-red-500">{errors.setCount && errors.setCount.message}</span>
       </div>
@@ -139,7 +139,7 @@ const SoundEffectForm = ({
   return (
     <>
       <div className="my-6">
-        <div className="text-sm text-gray-500">開始SE</div>
+        <div className="mb-1 text-sm text-subtext">開始SE</div>
         <NPFileForm
           id="start-file"
           accept="audio/*"
@@ -150,7 +150,7 @@ const SoundEffectForm = ({
         />
       </div>
       <div className="my-6">
-        <div className="text-sm text-gray-500">終了SE</div>
+        <div className="mb-1 text-sm text-subtext">終了SE</div>
         <NPFileForm
           id="end-file"
           accept="audio/*"
@@ -161,7 +161,7 @@ const SoundEffectForm = ({
         />
       </div>
       <div className="my-6">
-        <div className="text-sm text-gray-500">ボリューム</div>
+        <div className="text-sm text-subtext">ボリューム</div>
         <NPRangeSliderForm max={1} step={0.01} value={volume} onChange={e => setVolume(parseFloat(e.target.value))} />
       </div>
     </>

@@ -7,18 +7,20 @@
     --background: 245 247 250;
     --np-bright: 255 255 255;
     --np-shadow: 208 210 213;
+    --text: 31 41 55;
+    --sub-text: 107 114 128;
   }
 
-  /* .red {
+  .dark {
+    --background: 45 47 50;
+    --np-bright: 58 60 63;
+    --np-shadow: 25 27 30;
+    --text: 226 232 240;
+    --sub-text: 156 163 175;
   }
-
-  .green {
-  }
-
-  .blue {
-  } */
 
   body {
     @apply bg-background;
+    @apply text-text;
   }
 }

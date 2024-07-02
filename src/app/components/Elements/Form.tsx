@@ -40,7 +40,7 @@ type NPFileFormProps = {
 export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
   ({ id, fileName, className, showClose = false, onClickClose, ...props }, ref) => {
     const mergedClass = twMerge(
-      'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold bg-sky-50 text-sky-600 hover:bg-sky-100',
+      'w-24 text-center cursor-pointer rounded-l-md text-sm py-2 px-4 font-semibold shadow-np-shallow-flat active:shadow-np-shallow-pressed text-sky-600 dark:text-sky-500',
       className,
     );
 
@@ -60,7 +60,7 @@ export const NPFileForm = forwardRef<HTMLInputElement, NPFileFormProps>(
           選択
         </label>
         <div className="flex w-full items-center justify-between rounded-r-md text-sm text-slate-500 shadow-np-shallow-pressed">
-          <span className="ml-2 max-w-56 truncate">{fileName}</span>
+          <span className="ml-2 max-w-56 truncate text-text">{fileName}</span>
           {showClose && (
             <span
               onClick={onClickClose}
@@ -79,7 +79,7 @@ export const NPRangeSliderForm = forwardRef<HTMLInputElement, NPRangeSliderFormP
   ({ className, ...props }, ref) => {
     const mergedClass = twMerge(
       `
-        h-2 w-full appearance-none rounded-full cursor-pointer shadow-np-shallow-pressed
+        h-2 w-full appearance-none rounded-full cursor-pointer shadow-np-shallow-pressed bg-background
         [&::-webkit-slider-thumb]:size-4
         [&::-webkit-slider-thumb]:appearance-none
         [&::-webkit-slider-thumb]:rounded-full
@@ -93,9 +93,9 @@ export const NPRangeSliderForm = forwardRef<HTMLInputElement, NPRangeSliderFormP
 
     return (
       <div className="mt-1 flex w-full items-center gap-2">
-        <span className="i-material-symbols-volume-off-rounded size-7 text-gray-500" />
+        <span className="i-material-symbols-volume-off-rounded size-7 text-subtext" />
         <input ref={ref} type="range" className={mergedClass} {...props} />
-        <span className="i-material-symbols-volume-up-rounded size-7 text-gray-500" />
+        <span className="i-material-symbols-volume-up-rounded size-7 text-subtext" />
       </div>
     );
   },

@@ -13,9 +13,9 @@ const npButton = tv({
       fly: 'bg-red-500',
     },
     npColor: {
-      green: 'text-green-600',
-      red: 'text-red-600',
-      blue: 'text-sky-600',
+      green: 'text-green-600 dark:text-green-500',
+      red: 'text-red-600 dark:text-red-500',
+      blue: 'text-sky-600 dark:text-sky-500',
     },
   },
 });
