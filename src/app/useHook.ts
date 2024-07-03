@@ -60,3 +60,35 @@ export const useSoundEffects = () => {
     setVolume,
   };
 };
+
+export const useNotification = () => {
+  const pushNotification = useCallback((title: string, icon: string) => {
+    const notification = new Notification(title, { icon, silent: true });
+    setTimeout(notification.close.bind(notification), 6000);
+  }, []);
+
+  const onWorkNotification = useCallback(
+    () => pushNotification('作業開始', '/notification/icon-work.png'),
+    [pushNotification],
+  );
+
+  const onBreakNotification = useCallback(
+    () => pushNotification('休憩開始', '/notification/icon-break.png'),
+    [pushNotification],
+  );
+
+  const onLongBreakNotification = useCallback(
+    () => pushNotification('ロング休憩開始', '/notification/icon-long-break.png'),
+    [pushNotification],
+  );
+
+  useEffect(() => {
+    Notification.requestPermission();
+  }, []);
+
+  return {
+    onWorkNotification,
+    onBreakNotification,
+    onLongBreakNotification,
+  };
+};

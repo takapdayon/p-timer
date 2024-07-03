@@ -4,7 +4,7 @@ import { HeaderButton } from '@/app/components/HeaderButton';
 import { SettingForm } from '@/app/components/SettingForm';
 import { Timer } from '@/app/components/Timer';
 import { TimeFormDefaultValues } from '@/app/type';
-import { useSoundEffects } from '@/app/useHook';
+import { useNotification, useSoundEffects } from '@/app/useHook';
 import { useCallback, useState } from 'react';
 
 const Home = () => {
@@ -13,6 +13,7 @@ const Home = () => {
   const [countState, setCountState] = useState(1);
   const { playStartSE, playEndSE, setStartSE, setEndSE, volume, setVolume } = useSoundEffects();
   const [settingTime, setSettingTime] = useState(TimeFormDefaultValues);
+  const { onWorkNotification, onBreakNotification, onLongBreakNotification } = useNotification();
 
   const getTime = useCallback((minutes: number) => {
     const time = new Date();
@@ -24,18 +25,18 @@ const Home = () => {
     if (onBreakTime) {
       setOnBreakTime(false);
       playStartSE();
+      onWorkNotification();
       return getTime(settingTime.time);
     }
     playEndSE();
     setOnBreakTime(true);
     setCountState(prev => prev + 1);
 
-    if (!settingTime.needLongBreak) {
-      return getTime(settingTime.breakTime);
-    }
-    if (countState !== 0 && countState % settingTime.setCount === 0) {
+    if (settingTime.needLongBreak && countState !== 0 && countState % settingTime.setCount === 0) {
+      onLongBreakNotification();
       return getTime(settingTime.longBreakTime);
     }
+    onBreakNotification();
     return getTime(settingTime.breakTime);
   }, [
     countState,
@@ -48,6 +49,9 @@ const Home = () => {
     settingTime.needLongBreak,
     settingTime.setCount,
     settingTime.time,
+    onWorkNotification,
+    onBreakNotification,
+    onLongBreakNotification,
   ]);
 
   const onClickRestart = useCallback(() => {
