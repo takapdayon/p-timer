@@ -26,7 +26,6 @@ const Home = () => {
       playStartSE();
       return getTime(settingTime.time);
     }
-
     playEndSE();
     setOnBreakTime(true);
     setCountState(prev => prev + 1);
@@ -65,7 +64,7 @@ const Home = () => {
             <h2
               className={`i-material-symbols-timer size-10 text-3xl font-bold ${
                 onBreakTime
-                  ? countState !== 0 && (countState - 1) % settingTime.setCount === 0
+                  ? settingTime.needLongBreak && countState !== 0 && (countState - 1) % settingTime.setCount === 0
                     ? 'text-blue-500'
                     : 'text-green-500'
                   : 'text-red-500'
