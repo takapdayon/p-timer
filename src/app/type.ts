@@ -10,7 +10,7 @@ export const TimeFormSchema = z.object({
   breakTime: commonTime,
   longBreakTime: commonTime,
   needLongBreak: z.boolean(),
-  setCount: z.number(),
+  setCount: z.number({ message: '数字を入力してください' }),
 });
 
 export const TimeFormDefaultValues = {
