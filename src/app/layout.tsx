@@ -20,6 +20,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png"></link>
         <meta name="theme-color" content="#F5F7FA" />
+        <meta name="google-site-verification" content="w53SzNQiWrR0WyIYD5PXAc4kCztJ5HDDB86bXRAyUpI" />
       </head>
       <body className={`${noteSansJP.className} h-screen`}>
         <ThemeProvider enableSystem={false} attribute="class">
