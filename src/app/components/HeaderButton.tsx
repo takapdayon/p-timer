@@ -1,10 +1,9 @@
 import { NPButton } from '@/app/components/Elements/Button';
 import { useTheme } from 'next-themes';
-import { type Dispatch, type SetStateAction } from 'react';
 
 type HeaderButtonProps = {
   openConfig: boolean;
-  setOpenConfig: Dispatch<SetStateAction<boolean>>;
+  setOpenConfig: () => void;
 };
 
 export const HeaderButton = ({ openConfig, setOpenConfig }: HeaderButtonProps) => {
@@ -15,7 +14,7 @@ export const HeaderButton = ({ openConfig, setOpenConfig }: HeaderButtonProps) =
         npType={openConfig ? 'press' : 'flat'}
         npColor={openConfig ? 'blue' : undefined}
         className="size-8"
-        onClick={() => setOpenConfig(prev => !prev)}
+        onClick={setOpenConfig}
       >
         <span className="i-material-symbols-settings-outline-rounded size-6"></span>
       </NPButton>
